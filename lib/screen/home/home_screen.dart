@@ -28,13 +28,19 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text('Restaurant Apps'),
         actions: [
+          context.watch<ThemeProvider>().isDefaultTheme
+              ? const Icon(Icons.sunny)
+              : const Icon(Icons.nightlight),
           ChangeNotifierProvider(
             create: (context) => ThemeProvider(),
-            child: Switch(
-              value: context.watch<ThemeProvider>().isDefaultTheme,
-              onChanged: (value) {
-                context.read<ThemeProvider>().isDefaultTheme = value;
-              },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Switch(
+                value: context.watch<ThemeProvider>().isDefaultTheme,
+                onChanged: (value) {
+                  context.read<ThemeProvider>().isDefaultTheme = value;
+                },
+              ),
             ),
           ),
         ],

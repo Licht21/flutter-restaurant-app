@@ -33,18 +33,23 @@ class _BodyOfDetailScreenWidgetState extends State<BodyOfDetailScreenWidget> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  widget.restaurant.name,
-                  style: Theme.of(context).textTheme.headlineLarge,
+                Expanded(
+                  child: Text(
+                    widget.restaurant.name,
+                    style: Theme.of(context).textTheme.headlineLarge,
+                  ),
                 ),
-                Column(
-                  children: [
-                    const Icon(Icons.star),
-                    Text(
-                      widget.restaurant.rating.toString(),
-                      style: Theme.of(context).textTheme.titleSmall,
-                    ),
-                  ],
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      const Icon(Icons.star),
+                      Text(
+                        widget.restaurant.rating.toString(),
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
