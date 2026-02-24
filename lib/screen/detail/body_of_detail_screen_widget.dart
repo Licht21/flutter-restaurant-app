@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
 import 'package:restaurant_app/data/model/restaurant/restaurant_detail_response.dart';
+import 'package:restaurant_app/provider/home/theme_provider.dart';
 
 class BodyOfDetailScreenWidget extends StatefulWidget {
   final RestaurantDetail restaurant;
@@ -91,14 +93,22 @@ class _BodyOfDetailScreenWidgetState extends State<BodyOfDetailScreenWidget> {
                     child: Container(
                       width: 100,
                       decoration: BoxDecoration(
-                        color: Colors.black,
+                        color: context.read<ThemeProvider>().isDefaultTheme
+                            ? Colors.black
+                            : Colors.white,
                         borderRadius: BorderRadiusGeometry.circular(10),
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
                           widget.restaurant.menus.foods[index].name,
-                          style: Theme.of(context).textTheme.labelLarge,
+                          style: Theme.of(context).textTheme.labelLarge
+                              ?.copyWith(
+                                color:
+                                    context.read<ThemeProvider>().isDefaultTheme
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
                         ),
                       ),
                     ),
@@ -119,14 +129,22 @@ class _BodyOfDetailScreenWidgetState extends State<BodyOfDetailScreenWidget> {
                     child: Container(
                       width: 100,
                       decoration: BoxDecoration(
-                        color: Colors.black,
+                        color: context.read<ThemeProvider>().isDefaultTheme
+                            ? Colors.black
+                            : Colors.white,
                         borderRadius: BorderRadiusGeometry.circular(10),
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
                           widget.restaurant.menus.drinks[index].name,
-                          style: Theme.of(context).textTheme.labelLarge,
+                          style: Theme.of(context).textTheme.labelLarge
+                              ?.copyWith(
+                                color:
+                                    context.read<ThemeProvider>().isDefaultTheme
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
                         ),
                       ),
                     ),

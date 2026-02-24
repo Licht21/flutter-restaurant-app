@@ -28,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text('Restaurant Apps'),
         actions: [
-          context.watch<ThemeProvider>().isDefaultTheme
+          context.read<ThemeProvider>().isDefaultTheme
               ? const Icon(Icons.sunny)
               : const Icon(Icons.nightlight),
           ChangeNotifierProvider(
