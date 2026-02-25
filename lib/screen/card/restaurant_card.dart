@@ -1,18 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:restaurant_app/data/model/restaurant/restaurant.dart';
+import 'package:restaurant_app/provider/favorite/favorite_list_provider.dart';
 import 'package:restaurant_app/static/navigation_route.dart';
 
-class RestaurantDetailScreen extends StatefulWidget {
+class RestaurantCard extends StatefulWidget {
   final Restaurant restaurant;
-  const RestaurantDetailScreen({super.key, required this.restaurant});
+  const RestaurantCard({super.key, required this.restaurant});
 
   @override
-  State<RestaurantDetailScreen> createState() => _RestaurantDetailScreenState();
+  State<RestaurantCard> createState() => _RestaurantCardState();
 }
 
-class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
+class _RestaurantCardState extends State<RestaurantCard> {
+  bool isFavorite = false;
+
+  void isFavoriteRestaurant() {
+    setState(() {
+      isFavorite = context.read<FavoriteListProvider>().restaurants.any(
+        (e) => e.id == widget.restaurant.id,
+      );
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    isFavoriteRestaurant();
+  }
+
   @override
   Widget build(BuildContext context) {
+    isFavoriteRestaurant();
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(
@@ -51,9 +70,36 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    widget.restaurant.name,
-                    style: Theme.of(context).textTheme.titleMedium,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Expanded(
+                        flex: 5,
+                        child: Text(
+                          widget.restaurant.name,
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: IconButton(
+                          onPressed: () {
+                            isFavorite
+                                ? context
+                                      .read<FavoriteListProvider>()
+                                      .removeRestaurantFavorite(
+                                        widget.restaurant.id,
+                                      )
+                                : context
+                                      .read<FavoriteListProvider>()
+                                      .addRestaurantFavorite(widget.restaurant);
+                          },
+                          icon: isFavorite
+                              ? Icon(Icons.favorite)
+                              : Icon(Icons.favorite_border),
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox.square(dimension: 4),
                   Row(

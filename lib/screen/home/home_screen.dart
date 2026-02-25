@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:restaurant_app/provider/favorite/favorite_list_provider.dart';
 import 'package:restaurant_app/provider/home/restaurant_list_provider.dart';
 import 'package:restaurant_app/provider/home/theme_provider.dart';
 import 'package:restaurant_app/screen/card/restaurant_card.dart';
@@ -57,7 +58,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (context, index) {
                   final restaurant = restaurantList[index];
 
-                  return RestaurantDetailScreen(restaurant: restaurant);
+                  return Consumer<FavoriteListProvider>(
+                    builder: (context, value, widget) {
+                      return RestaurantCard(restaurant: restaurant);
+                    },
+                  );
                 },
               ),
             RestaurantListErrorState(error: var message) => Center(

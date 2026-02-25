@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_app/data/model/restaurant/restaurant_detail_response.dart';
 import 'package:restaurant_app/provider/home/theme_provider.dart';
