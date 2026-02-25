@@ -18,12 +18,11 @@ class FavoriteListProvider extends ChangeNotifier {
       if (result.isEmpty) {
         _message = 'Daftar Favorit Kosong';
         _restaurants = [];
-        notifyListeners();
       } else {
         _restaurants = result;
         _message = 'Berhasil mendapatkan daftar favorit';
-        notifyListeners();
       }
+      notifyListeners();
     } catch (_) {
       _message = 'Gagal mendapatkan daftar favorit';
       notifyListeners();

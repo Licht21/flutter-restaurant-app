@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:restaurant_app/provider/home/index_nav_provider.dart';
 import 'package:restaurant_app/screen/favorite/favorite_screen.dart';
 import 'package:restaurant_app/screen/home/home_screen.dart';
+import 'package:restaurant_app/screen/setting/setting_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -30,13 +31,19 @@ class _MainScreenState extends State<MainScreen> {
             label: 'Favorite',
             tooltip: 'Favorite',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Setting',
+            tooltip: 'Setting',
+          ),
         ],
       ),
       body: Consumer<IndexNavProvider>(
         builder: (context, value, child) {
           return switch (value.indexBottomNavbar) {
             0 => const HomeScreen(),
-            _ => const FavoriteScreen(),
+            1 => const FavoriteScreen(),
+            _ => const SettingScreen(),
           };
         },
       ),

@@ -14,6 +14,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: const Text('Restaurant Favorite')),
       body: Consumer<FavoriteListProvider>(
         builder: (context, value, child) {
           final favoriteRestaurantList = value.restaurants;

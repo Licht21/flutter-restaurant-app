@@ -32,18 +32,6 @@ class _HomeScreenState extends State<HomeScreen> {
           context.read<ThemeProvider>().isDefaultTheme
               ? const Icon(Icons.sunny)
               : const Icon(Icons.nightlight),
-          ChangeNotifierProvider(
-            create: (context) => ThemeProvider(),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Switch(
-                value: context.watch<ThemeProvider>().isDefaultTheme,
-                onChanged: (value) {
-                  context.read<ThemeProvider>().isDefaultTheme = value;
-                },
-              ),
-            ),
-          ),
         ],
       ),
       body: Consumer<RestaurantListProvider>(
