@@ -9,6 +9,9 @@ class FavoriteListProvider extends ChangeNotifier {
   List<Restaurant> _restaurants = [];
   List<Restaurant> get restaurants => _restaurants;
 
+  Restaurant? _restaurant;
+  Restaurant? get restaurant => _restaurant;
+
   String _message = '';
   String get message => _message;
 
@@ -20,24 +23,31 @@ class FavoriteListProvider extends ChangeNotifier {
         _restaurants = [];
       } else {
         _restaurants = result;
+        _restaurant = null;
         _message = 'Berhasil mendapatkan daftar favorit';
       }
-      notifyListeners();
     } catch (_) {
       _message = 'Gagal mendapatkan daftar favorit';
-      notifyListeners();
     }
+    notifyListeners();
   }
 
   Future<void> addRestaurantFavorite(Restaurant restaurant) async {
     try {
-      await _sqfliteServices.insertFavoriteRestaurant(restaurant);
-      _message = 'Berhasil menambahkan restaurant ke daftar favorit';
-      await getRestaurantFavorite();
+      final result = await _sqfliteServices.insertFavoriteRestaurant(
+        restaurant,
+      );
+
+      final isError = result == 0;
+      if (isError) {
+        _message = 'Gagal menambahkan restaurant ke daftar favorit';
+      } else {
+        _message = 'Berhasil menambahkan restaurant ke daftar favorit';
+      }
     } catch (_) {
       _message = 'Gagal menambahkan restaurant ke daftar favorit';
-      notifyListeners();
     }
+    notifyListeners();
   }
 
   Future<void> removeRestaurantFavorite(String id) async {
@@ -45,7 +55,6 @@ class FavoriteListProvider extends ChangeNotifier {
       final result = await _sqfliteServices.removeFavoriteRestaurant(id);
       if (result == 1) {
         _message = 'Berhasil menghapus restaurant dari daftar favorit';
-        await getRestaurantFavorite();
       } else {
         _message = 'Gagal menghapus restaurant dari daftar favorit';
         notifyListeners();
@@ -54,5 +63,20 @@ class FavoriteListProvider extends ChangeNotifier {
       _message = 'Gagal menghapus restaurant dari daftar favorit';
       notifyListeners();
     }
+  }
+
+  Future<void> loadRestaurantById(String id) async {
+    try {
+      _restaurant = await _sqfliteServices.getRestaurantByID(id);
+      _message = 'Berhasil mendapatkan data restaurant';
+    } catch (_) {
+      _message = 'Gagal mendapatkan data restaurant';
+    }
+    notifyListeners();
+  }
+
+  bool checkItemFavorite(String id) {
+    final isSameRestaurant = _restaurant?.id == id;
+    return isSameRestaurant;
   }
 }

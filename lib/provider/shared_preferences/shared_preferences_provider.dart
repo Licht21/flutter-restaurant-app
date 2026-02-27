@@ -13,9 +13,15 @@ class SharedPreferencesProvider extends ChangeNotifier {
   Settings _setting;
   Settings get setting => _setting;
 
-  Future<void> saveSettingValue(Settings setting) async {
+  Future<void> saveSettingValue({
+    bool? isDefaultTheme,
+    bool? isNotificationEnabled,
+  }) async {
     try {
-      await _sharedPreferencesServices.setSettingValue(setting);
+      await _sharedPreferencesServices.setSettingValue(
+        isDefaultTheme: isDefaultTheme,
+        isNotificationEnabled: isNotificationEnabled,
+      );
       _message = ' Your data is saved';
     } catch (_) {
       _message = 'Failed to save your data';

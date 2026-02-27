@@ -57,4 +57,11 @@ class SqfliteServices {
 
     return result;
   }
+
+  Future<Restaurant> getRestaurantByID(String id) async {
+    final db = await _initDatabase();
+
+    final result = await db.query(_tableName, where: 'id = ?', whereArgs: [id]);
+    return Restaurant.fromJson(result.first);
+  }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_app/data/model/restaurant/restaurant_detail_response.dart';
 import 'package:restaurant_app/provider/home/theme_provider.dart';
+import 'package:restaurant_app/screen/favorite/favorite_icon.dart';
 
 class BodyOfDetailScreenWidget extends StatefulWidget {
   final RestaurantDetail restaurant;
@@ -24,6 +25,13 @@ class _BodyOfDetailScreenWidgetState extends State<BodyOfDetailScreenWidget> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                const Text('Add Favorite'),
+                FavoriteIcon(restaurant: widget.restaurant),
+              ],
+            ),
             Hero(
               tag: widget.restaurant.pictureId,
               child: Image.network(

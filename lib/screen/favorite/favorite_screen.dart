@@ -12,6 +12,15 @@ class FavoriteScreen extends StatefulWidget {
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
   @override
+  void initState() {
+    Future.microtask(() {
+      if (!mounted) return;
+      context.read<FavoriteListProvider>().getRestaurantFavorite();
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Restaurant Favorite')),
@@ -28,11 +37,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
               itemBuilder: (context, index) {
                 final restaurant = favoriteRestaurantList[index];
 
-                return Consumer<FavoriteListProvider>(
-                  builder: (context, value, widget) {
-                    return RestaurantCard(restaurant: restaurant);
-                  },
-                );
+                return RestaurantCard(restaurant: restaurant);
               },
             ),
           };

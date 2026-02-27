@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:restaurant_app/data/model/restaurant/restaurant.dart';
-import 'package:restaurant_app/provider/favorite/favorite_list_provider.dart';
 import 'package:restaurant_app/static/navigation_route.dart';
 
 class RestaurantCard extends StatefulWidget {
@@ -13,25 +11,8 @@ class RestaurantCard extends StatefulWidget {
 }
 
 class _RestaurantCardState extends State<RestaurantCard> {
-  bool isFavorite = false;
-
-  void isFavoriteRestaurant() {
-    setState(() {
-      isFavorite = context.read<FavoriteListProvider>().restaurants.any(
-        (e) => e.id == widget.restaurant.id,
-      );
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    isFavoriteRestaurant();
-  }
-
   @override
   Widget build(BuildContext context) {
-    isFavoriteRestaurant();
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(
@@ -60,6 +41,14 @@ class _RestaurantCardState extends State<RestaurantCard> {
                   tag: widget.restaurant.pictureId,
                   child: Image.network(
                     'https://restaurant-api.dicoding.dev/images/medium/${widget.restaurant.pictureId}',
+                    errorBuilder: (context, e, stackTrace) {
+                      return Center(
+                        child: Text(
+                          'Failed to Load Image',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),
@@ -78,25 +67,6 @@ class _RestaurantCardState extends State<RestaurantCard> {
                         child: Text(
                           widget.restaurant.name,
                           style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: IconButton(
-                          onPressed: () {
-                            isFavorite
-                                ? context
-                                      .read<FavoriteListProvider>()
-                                      .removeRestaurantFavorite(
-                                        widget.restaurant.id,
-                                      )
-                                : context
-                                      .read<FavoriteListProvider>()
-                                      .addRestaurantFavorite(widget.restaurant);
-                          },
-                          icon: isFavorite
-                              ? Icon(Icons.favorite)
-                              : Icon(Icons.favorite_border),
                         ),
                       ),
                     ],

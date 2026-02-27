@@ -18,6 +18,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
     super.initState();
 
     Future.microtask(() {
+      if (!mounted) return;
       context.read<RestaurantDetailProvider>().fetchRestaurant(
         widget.restaurantId,
       );
@@ -27,7 +28,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Restaurant Detail')),
+      appBar: AppBar(title: const Text('Restaurant Detail'), actions: []),
       body: Consumer<RestaurantDetailProvider>(
         builder: (context, value, child) {
           return switch (value.resultState) {

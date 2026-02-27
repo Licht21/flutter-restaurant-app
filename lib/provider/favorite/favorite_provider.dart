@@ -4,7 +4,7 @@ class FavoriteProvider extends ChangeNotifier {
   bool _isFavorite = false;
   bool get isFavorite => _isFavorite;
 
-  set setIsFavorite(bool value) {
+  set isFavorite(bool value) {
     _isFavorite = value;
     notifyListeners();
   }

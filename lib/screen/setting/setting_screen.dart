@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:restaurant_app/data/model/setting/settings.dart';
-import 'package:restaurant_app/provider/home/theme_provider.dart';
+import 'package:restaurant_app/provider/local_notification/local_notification_provider.dart';
 import 'package:restaurant_app/provider/shared_preferences/shared_preferences_provider.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -12,8 +11,12 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
-  Future<void> themeState() async {
+  Future<void> settingState() async {
     context.read<SharedPreferencesProvider>().getSettingValue();
+  }
+
+  Future<void> _requestPermission() async {
+    context.read<LocalNotificationProvider>().requestPermissions();
   }
 
   @override
@@ -38,8 +41,55 @@ class _SettingScreenState extends State<SettingScreen> {
                       onChanged: (v) {
                         context
                             .read<SharedPreferencesProvider>()
-                            .saveSettingValue(Settings(isDefaultTheme: v));
-                        themeState();
+                            .saveSettingValue(isDefaultTheme: v);
+                        settingState();
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox.square(dimension: 8),
+            Row(
+              children: [
+                Expanded(child: const Text("Notification Reminder")),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Switch(
+                      value: context
+                          .watch<SharedPreferencesProvider>()
+                          .setting
+                          .isNotificationEnabled,
+                      onChanged: (v) {
+                        context
+                            .read<SharedPreferencesProvider>()
+                            .saveSettingValue(isNotificationEnabled: v);
+                        context
+                            .read<LocalNotificationProvider>()
+                            .notificationEnabledStatus(v);
+                        settingState();
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox.square(dimension: 8),
+            Row(
+              children: [
+                Expanded(child: const Text('Notification Permission Status')),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      await _requestPermission();
+                    },
+                    child: Consumer<LocalNotificationProvider>(
+                      builder: (context, value, child) {
+                        return Text(
+                          'Permission ${value.permission ?? false ? 'Granted' : 'Not Granted'}',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        );
                       },
                     ),
                   ),
